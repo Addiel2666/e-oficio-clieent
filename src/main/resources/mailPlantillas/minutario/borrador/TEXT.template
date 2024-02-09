@@ -1,7 +1,0 @@
-Estimado(a): ${revisor}
-
-Envío para revisión, el borrador de oficio con identificador No. ${idMinutario} de ${firmante}
- 
-Atentamente:
-${area} 
-${url}
