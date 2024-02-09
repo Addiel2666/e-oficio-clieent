@@ -1,0 +1,5 @@
+Estimado ${destinatario}
+
+Usted tiene un documento pendiente de Firma relacionado al oficio ${oficio} y la siguiente descripción: ID Origen: "${idorigen}", " ${asunto} ". para firmarlo por favor ingrese al Sistema de Control de Gestión.
+
+	

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>SIGAP V :: REST Services</title>
+<link rel="stylesheet" href="bootstrap.min.css">
+<script type="text/javascript" src="jquery-2.2.3.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<meta charset="UTF-8" />
+
+<link rel="shortcut icon" href="ecm.ico" type="image/x-icon">
+
+<script type="text/javascript">
+
+		function callRecoverArea() {
+
+			var idArea = $('#idArea').val();
+
+			if(idArea!=""){
+			
+			$('#ajaxLoader').show();
+			
+			var pathContext_ = window.location.pathname;
+	
+			pathContext_ = pathContext_.replace("/recuperarArea.html", "");
+   
+			var path = window.location.protocol + "//"
+				+ window.location.host
+				+ pathContext_+"/recuperarArea?id="+idArea;
+
+			console.log(path);
+
+			var result;
+			
+
+			var jqxhr = $.get(path,
+
+				function (data) {
+                  
+					console.log(data);
+					// - - - - - - - - - - - - - -
+						result=data;					
+
+					// - - - - - - - - - - - - - -
+				},
+
+				"html");
+
+			jqxhr.always(function () {
+				$('#resultDiv').empty();
+				$('#resultDiv').append(
+					'<pre id="innerDiv">'
+					+ result
+					+ '</pre>');
+				$('#ajaxLoader').hide();
+
+			});
+
+			}
+		}
+
+		$(document)
+			.ready(
+			function () {
+				$('#ajaxLoader').hide();
+			});
+
+	</script>
+
+</head>
+
+<body>
+
+	<div class="page-header">
+		<h1>
+			Welcome!<br /> <small>Recuperar Area. </small>
+		</h1>
+
+	</div>
+
+	<div class="container">
+
+		<div class="row">
+			
+			<div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="basic-addon1"></span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="idArea">ID del area a recuperar</label>
+				<input id="idArea" class="form-control" aria-label="ID" placeholder="ID" type="number" aria-describedby="basic-addon1" />
+			</div>
+
+		</div>
+
+		<div class="row">
+
+			<button type="button" class="btn btn-warning"
+				onclick="callRecoverArea()">Run</button>
+			<button type="button" class="btn btn-danger"
+				onclick="window.close();">Exit</button>
+
+		</div>
+
+		<div class="row">&nbsp;</div>
+
+		<div class="row">
+
+			<img id="ajaxLoader" alt="loading..." src="ajax-loader.gif" />
+
+			<div id="resultDiv"></div>
+
+		</div>
+
+	</div>
+</body>
+
+</html>

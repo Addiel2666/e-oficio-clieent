@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>SIGAP V :: REST Services</title>
+<link rel="stylesheet" href="bootstrap.min.css">
+<script type="text/javascript" src="jquery-2.2.3.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<meta charset="UTF-8" />
+
+<link rel="shortcut icon" href="ecm.ico" type="image/x-icon">
+
+<script type="text/javascript">
+
+		function callCheck() {
+
+			$('#ajaxLoader').show();
+
+			var checkValues = $('input[name=checkboxlist]:checked').map(function () {
+				return $(this).val();
+			}).get();
+
+			console.log(checkValues);
+
+			var pathContext_ = window.location.pathname;
+			
+			pathContext_ = pathContext_.replace("/check.html", "");
+
+			var path = window.location.protocol + "//"
+				+ window.location.host
+				+ pathContext_+"/sanityCheck";
+
+			console.log(path);
+
+			var result;
+			$.ajaxSetup({ contentType: "application/json" });
+
+			var jqxhr = $.post(path,
+
+				JSON.stringify(checkValues),
+
+				function (data) {
+
+					console.log(data);
+
+					result = {};
+
+					// - - - - - - - - - - - - - -
+
+					if (data['areasSinFolios']) {
+						result['areasSinFolios'] = data['areasSinFolios'].length;
+					}
+
+					if (data['errorAreasSinFolios']) {
+						result['errorAreasSinFolios'] = data['errorAreasSinFolios'];
+					}
+
+					// - - - - - - - - - - - - - -
+
+					if (data['areasSinFoliosDesbloqueados']) {
+						result['areasSinFoliosDesbloqueados'] = data['areasSinFoliosDesbloqueados'].length;
+					}
+
+					if (data['errorAreasSinFoliosDesbloqueados']) {
+						result['errorAreasSinFoliosDesbloqueados'] = data['errorAreasSinFoliosDesbloqueados'];
+					}
+
+					// - - - - - - - - - - - - - -
+
+					if (data['asuntosSinFechaReg']) {
+						result['asuntosSinFechaReg'] = data['asuntosSinFechaReg'].length;
+					}
+
+					if (data['errorAsuntosSinFechaReg']) {
+						result['errorAsuntosSinFechaReg'] = data['errorAsuntosSinFechaReg'];
+					}
+
+					// - - - - - - - - - - - - - -
+
+					if (data['areasSinContentId']) {
+						result['areasSinContentId'] = data['areasSinContentId'].length;
+					}
+
+					if (data['errorAreasSinContentId']) {
+						result['errorAreasSinContentId'] = data['errorAreasSinContentId'];
+					}
+				
+			        // - - - - - - - - - - - - - -
+			        
+			        if (data['areasSinDescripcion']) {
+						result['areasSinDescripcion'] = data['areasSinDescripcion'].length;
+					}
+
+					if (data['errorAreasSinDescripcion']) {
+						result['errorAreasSinDescripcion'] = data['errorAreasSinDescripcion'];
+					}
+				
+			        // - - - - - - - - - - - - - -
+
+					if (data['countArea']) {
+						result['countArea'] = data['countArea'];
+					}
+
+					if (data['errorCountArea']) {
+						result['errorCountArea'] = data['errorCountArea'];
+					}
+					// - - - - - - - - - - - - - -
+
+					if (data['countAsunto']) {
+						result['countAsunto'] = data['countAsunto'];
+					}
+
+					if (data['errorCountAsunto']) {
+						result['errorCountAsunto'] = data['errorCountAsunto'];
+					}
+					// - - - - - - - - - - - - - -
+
+					if (data['countTramite']) {
+						result['countTramite'] = data['countTramite'];
+					}
+
+					if (data['errorcountTramite']) {
+						result['errorcountTramite'] = data['errorcountTramite'];
+					}
+					// - - - - - - - - - - - - - -
+					
+					if (data['countRespuesta']) {
+						result['countRespuesta'] = data['countRespuesta'];
+					}
+
+					if (data['errorCountRespuesta']) {
+						result['errorCountRespuesta'] = data['errorCountRespuesta'];
+					}
+					// - - - - - - - - - - - - - -
+
+					if (data['countUsuario']) {
+						result['countUsuario'] = data['countUsuario'];
+					}
+
+					if (data['errorCountUsuario']) {
+						result['errorCountUsuario'] = data['errorCountUsuario'];
+					}
+					// - - - - - - - - - - - - - -
+				},
+
+				"json");
+
+			jqxhr.always(function () {
+				$('#resultDiv').empty();
+				$('#resultDiv').append(
+					'<pre id="innerDiv">'
+					+ JSON.stringify(result, null, 2)
+					+ '</pre>');
+				$('#ajaxLoader').hide();
+
+			});
+
+		}
+
+		$(document)
+			.ready(
+			function () {
+				$('#ajaxLoader').hide();
+			});
+
+	</script>
+
+</head>
+
+<body>
+
+	<div class="page-header">
+		<h1>
+			Welcome!<br /> <small>Sanity Check. </small>
+		</h1>
+
+	</div>
+	
+	<div class="container">
+
+		<div class="row">
+
+			<div class="col col-6">
+
+				<div class="custom-control custom-checkbox">
+					<input name="checkboxlist" type="checkbox" value="1" id="ckbx-1" />
+					<label class="custom-control-label" for="ckbx-1">Areas sin
+						folios</label>
+				</div>
+
+				<div class="custom-control custom-checkbox">
+					<input name="checkboxlist" type="checkbox" value="2" id="ckbx-2" />
+					<label class="custom-control-label" for="ckbx-2">Areas sin
+						folios desbloqueados</label>
+				</div>
+
+				<div class="custom-control custom-checkbox">
+					<input name="checkboxlist" type="checkbox" value="3" id="ckbx-3" />
+					<label class="custom-control-label" for="ckbx-3">Asunto sin
+						fecha registro</label>
+				</div>
+
+				<div class="custom-control custom-checkbox">
+					<input name="checkboxlist" type="checkbox" value="4" id="ckbx-4" />
+					<label class="custom-control-label" for="ckbx-4">Areas sin
+						descripcion</label>
+				</div>
+
+				<div class="custom-control custom-checkbox">
+					<input name="checkboxlist" type="checkbox" value="5" id="ckbx-5" />
+					<label class="custom-control-label" for="ckbx-5">Areas sin
+						contentId</label>
+				</div>
+
+			</div>
+			
+			<div class="col col-6">
+
+				<div class="custom-control custom-checkbox">
+					<input name="checkboxlist" type="checkbox" value="6" id="ckbx-6" />
+					<label class="custom-control-label" for="ckbx-6">Contar
+						Areas</label>
+				</div>
+
+				<div class="custom-control custom-checkbox">
+					<input name="checkboxlist" type="checkbox" value="7" id="ckbx-7" />
+					<label class="custom-control-label" for="ckbx-7">Contar
+						Asuntos</label>
+				</div>
+
+				<div class="custom-control custom-checkbox">
+					<input name="checkboxlist" type="checkbox" value="8" id="ckbx-8" />
+					<label class="custom-control-label" for="ckbx-8">Contar
+						Tramites</label>
+				</div>
+
+				<div class="custom-control custom-checkbox">
+					<input name="checkboxlist" type="checkbox" value="9" id="ckbx-9" />
+					<label class="custom-control-label" for="ckbx-9">Contar
+						Respuestas</label>
+				</div>
+
+				<div class="custom-control custom-checkbox">
+					<input name="checkboxlist" type="checkbox" value="10" id="ckbx-10" />
+					<label class="custom-control-label" for="ckbx-10">Contar
+						Usuarios</label>
+				</div>
+
+				<!-- <div class="custom-control custom-checkbox">
+					<input name="checkboxlist" type="checkbox" value="11" id="ckbx-11" />
+					<label class="custom-control-label" for="ckbx-11"> </label>
+				</div> -->
+
+			</div>
+
+		</div>
+
+		<div class="row">
+
+			<button type="button" class="btn btn-warning" onclick="callCheck()">Run</button>
+			<button type="button" class="btn btn-danger" onclick="window.close();">Exit</button>
+
+		</div>
+		
+		<div class="row">
+			&nbsp;
+		</div>
+		
+		<div class="row">
+		
+			<img id="ajaxLoader" alt="loading..." src="ajax-loader.gif" />
+
+			<div id="resultDiv"></div>
+			
+		</div>
+
+	</div>
+
+</body>
+
+</html>

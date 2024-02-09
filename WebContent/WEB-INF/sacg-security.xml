@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="
+	    http://www.springframework.org/schema/security
+      	http://www.springframework.org/schema/security/spring-security.xsd
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Seguridad de la aplicacion -->
+	<security:global-method-security
+		secured-annotations="enabled" />
+
+	<security:http entry-point-ref="sacgEntryPoint"
+		create-session="stateless" use-expressions="true"
+		authentication-manager-ref="sacgAuthenticationManager">
+
+		<security:intercept-url pattern="/login/**"
+			access="permitAll" />
+
+		<security:intercept-url pattern="/seguridad/**"
+			access="permitAll" />
+		
+		<security:intercept-url pattern="/downloadDocument2/*"
+			access="permitAll" />
+			
+		<security:intercept-url pattern="/api/**"
+			access="permitAll" />
+
+		<security:intercept-url
+			pattern="/v2/api-docs/*" access="permitAll" />
+
+		<security:intercept-url pattern="/ope/**"
+			access="permitAll" />
+
+		<security:intercept-url pattern="/**/*.html"
+			access="permitAll" />
+
+		<!-- <security:intercept-url pattern="/*" access="permitAll" /> -->
+
+		<security:custom-filter
+			after="FORM_LOGIN_FILTER" ref="sacgAuthenticationFilter" />
+
+		<security:form-login
+			authentication-success-handler-ref="sacgSuccessHandler"
+			authentication-failure-handler-ref="sacgFailureHandler" />
+
+		<security:csrf disabled="true" />
+
+		<security:headers>
+			<security:cache-control />
+		</security:headers>
+
+	</security:http>
+
+	<security:authentication-manager
+		alias="sacgAuthenticationManager">
+		<security:authentication-provider
+			user-service-ref="sacgUserDetailService" />
+	</security:authentication-manager>
+
+	<bean id="sacgEntryPoint"
+		class='com.ecm.sigap.security.auth.SacgAuthenticationEntryPoint' />
+
+	<bean id="sacgUserDetailService"
+		class="com.ecm.sigap.security.auth.SacgUserDetailServiceImpl" />
+
+	<bean id="sacgAuthenticationFilter"
+		class="com.ecm.sigap.security.auth.SacgAuthenticationFilter">
+		<property name="sacgUserDetailService"
+			ref="sacgUserDetailService" />
+	</bean>
+
+	<!-- Connect the custom authentication success handler -->
+	<bean id="sacgSuccessHandler"
+		class="com.ecm.sigap.security.auth.SacgAuthenticationSuccessHandler" />
+
+	<!-- Using default failure handler -->
+	<bean id="sacgFailureHandler"
+		class="com.ecm.sigap.security.auth.SacgAuthenticationFailureHandler" />
+
+</beans>

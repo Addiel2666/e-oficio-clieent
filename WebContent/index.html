@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>SIGAP V :: REST Services</title>
+<link rel="stylesheet" href="bootstrap.min.css">
+<script type="text/javascript" src="jquery-2.2.3.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<meta charset="UTF-8" />
+
+<link rel="shortcut icon" href="ecm.ico" type="image/x-icon">
+
+<script type="text/javascript">
+	var tests = [ //
+	// "repositoryTest", //
+	// "databaseTest", //
+	// "digitalSignTest",//
+	// "notificationServiceTest", //
+	// "documentConversionServiceTest", //
+	// "eArchvoTest",//
+	// "casTest", //
+	"buildDate", //
+	// "systemInfo", //
+	"licenceInfo" //
+	];
+
+	var pathContext = window.location.pathname;
+
+	pathContext = pathContext.replace("/index.html", "");
+	pathContext = pathContext + "/test?testType="
+	pathContext = pathContext.replace("//", "/");
+
+	var path = window.location.protocol + "//" + window.location.host
+			+ pathContext;
+
+	$(document).ready(function() {
+		runTests();
+	});
+
+	var countTest;
+
+	function runTests() {
+		countTest = 0;
+		$.each(tests, function(index, item) {
+			doTest(item);
+		});
+	}
+
+	function doTest(type_) {
+		var result;
+		var jqxhr = $.get(path + type_, function(data) {
+			result = data;
+		}).fail(function(data) {
+			console.log(data);
+			result = data.responseText;
+			$("html, body").animate({ scrollTop: $(document).height() }, 1000);
+		});
+		jqxhr.always(function() {
+			$('#resultDiv').append(result);
+			countTest++;
+			if (countTest >= tests.length)
+				$('#ajaxLoader').hide();
+			$("html, body").animate({ scrollTop: $(document).height() }, 1000);
+		});
+	}
+
+	/** */
+	function verDocapi() {
+		var pathContext_ = window.location.pathname;
+		pathContext_ = pathContext_.replace("/index.html", "");
+		var path = window.location.protocol + "//" + window.location.host
+				+ pathContext_ + "/swagger-ui.html";
+		window.open(path);
+	}
+
+	/** */
+	function sanityCheck() {
+		var pathContext_ = window.location.pathname;
+		pathContext_ = pathContext_.replace("/index.html", "");
+		var path = window.location.protocol + "//" + window.location.host
+				+ pathContext_ + "/check.html";
+		window.open(path);
+	}
+	
+	/** */
+	function recoverArea() {
+		var pathContext_ = window.location.pathname;
+		pathContext_ = pathContext_.replace("/index.html", "");
+		var path = window.location.protocol + "//" + window.location.host
+				+ pathContext_ + "/recuperarArea.html";
+		window.open(path);
+	}
+	
+	/** */
+	function pruebaSintetica() {
+		var pathContext_ = window.location.pathname;
+		pathContext_ = pathContext_.replace("/index.html", "");
+		var path = window.location.protocol + "//" + window.location.host
+				+ pathContext_ + "/pruebaSintetica.html";
+		window.open(path);
+	}
+
+	function retryTest() {
+		$('#resultDiv').html("");
+		$('#ajaxLoader').show();
+		runTests();
+	}
+</script>
+
+</head>
+
+<body>
+	<div class="page-header">
+		<h1>
+			Welcome!<br /> <small>These are the REST services for SIGAP
+				V. </small><br /> <small>Version <b>5.2</b> </small>
+		</h1>
+		<a target="blank_" style="cursor: pointer;" onclick="verDocapi()">Documentation</a>&nbsp;
+		<a target="blank_" style="cursor: pointer;" onclick="sanityCheck()">Sanity Check</a>&nbsp; 
+		<a target="blank_" style="cursor: pointer;" onclick="recoverArea()">Recuperar Area</a> 
+		<a target="blank_" style="cursor: pointer;" onclick="pruebaSintetica()">Prueba Sintetica</a> 
+		<a onclick="retryTest()" style="cursor: pointer;">Reload</a>
+
+	</div>
+
+
+	<img id="ajaxLoader" alt="loading..." src="ajax-loader.gif" />
+
+	<div id="resultDiv"></div>
+
+</body>
+
+</html>

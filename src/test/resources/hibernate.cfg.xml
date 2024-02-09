@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory name="">
+		<property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
+		<property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
+		<property name="hibernate.connection.username">SIGAPCFE</property>
+		<property name="hibernate.connection.password">SIGAPCFE</property>
+		<property name="hibernate.connection.url">jdbc:oracle:thin:@192.168.1.89:1521:XE</property>
+		<property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+		<property name="hibernate.search.autoregister_listeners">false</property>
+		<property name="hibernate.show_sql">true</property>
+		<property name="hibernate.format_sql">true</property>
+		
+		<mapping class="com.ecm.sigap.data.model.Acceso" />
+		<mapping class="com.ecm.sigap.data.model.Area" />
+		<mapping class="com.ecm.sigap.data.model.AreaAuxiliar" />
+		<mapping class="com.ecm.sigap.data.model.AreaPromotor" />
+		<mapping class="com.ecm.sigap.data.model.AreaPromotorKey" />
+		<mapping class="com.ecm.sigap.data.model.AreaRemitente" />
+		<mapping class="com.ecm.sigap.data.model.AreaRemitenteKey" />
+		<mapping class="com.ecm.sigap.data.model.AreaRevisor" />
+		<mapping class="com.ecm.sigap.data.model.AreaRevisorKey" />
+		<mapping class="com.ecm.sigap.data.model.Asunto" />
+		<mapping class="com.ecm.sigap.data.model.AsuntoCorrespondencia" />
+		<mapping class="com.ecm.sigap.data.model.AsuntoDetalle" />
+		<mapping class="com.ecm.sigap.data.model.Auditoria" />
+		<mapping class="com.ecm.sigap.data.model.Ciudadano" />
+		<mapping class="com.ecm.sigap.data.model.ClasificacionDocumental" />
+		<mapping class="com.ecm.sigap.data.model.Configuracion" />
+		<mapping class="com.ecm.sigap.data.model.ConfiguracionKey" />
+		<mapping class="com.ecm.sigap.data.model.CustomAsunto" />
+		<mapping class="com.ecm.sigap.data.model.DiaFestivo" />
+		<mapping class="com.ecm.sigap.data.model.DocumentoAsunto" />
+		<mapping class="com.ecm.sigap.data.model.DocumentoMinutario" />
+		<mapping class="com.ecm.sigap.data.model.DocumentoRespuesta" />
+		<mapping class="com.ecm.sigap.data.model.Empresa" />
+		<mapping class="com.ecm.sigap.data.model.Expediente" />
+		<mapping class="com.ecm.sigap.data.model.ExpedienteInfo" />
+		<mapping class="com.ecm.sigap.data.model.FavDestinatario" />
+		<mapping class="com.ecm.sigap.data.model.FavDestinatarioCiudadano" />
+		<mapping class="com.ecm.sigap.data.model.FavDestinatarioFuncionario" />
+		<mapping class="com.ecm.sigap.data.model.FavDestinatarioKey" />
+		<mapping class="com.ecm.sigap.data.model.FavDestinatarioRepLegal" />
+		<mapping class="com.ecm.sigap.data.model.Favorito" />
+		<mapping class="com.ecm.sigap.data.model.FavoritoFirmante" />
+		<mapping class="com.ecm.sigap.data.model.FavoritoFirmanteKey" />
+		<mapping class="com.ecm.sigap.data.model.FavoritoKey" />
+		<mapping class="com.ecm.sigap.data.model.FolioPS" />
+		<mapping class="com.ecm.sigap.data.model.FolioArchivistica" />
+		<mapping class="com.ecm.sigap.data.model.Fondo" />
+		<mapping class="com.ecm.sigap.data.model.InfomexSolicitud" />
+		<mapping class="com.ecm.sigap.data.model.InfomexSolicitudKey" />
+		<mapping class="com.ecm.sigap.data.model.Institucion" />
+		<mapping class="com.ecm.sigap.data.model.Minutario" />
+		<mapping class="com.ecm.sigap.data.model.MinutarioDestinatario" />
+		<mapping class="com.ecm.sigap.data.model.MinutarioRevisorKey" />
+		<mapping class="com.ecm.sigap.data.model.Permiso" />
+		<mapping class="com.ecm.sigap.data.model.PermisoKey" />
+		<mapping class="com.ecm.sigap.data.model.Plantilla" />
+		<mapping class="com.ecm.sigap.data.model.Representante" />
+		<mapping class="com.ecm.sigap.data.model.RepresentanteLegal" />
+		<mapping class="com.ecm.sigap.data.model.Respuesta" />
+		<mapping class="com.ecm.sigap.data.model.Rol" />
+		<mapping class="com.ecm.sigap.data.model.Ruta" />
+		<mapping class="com.ecm.sigap.data.model.Seccion" />
+		<mapping class="com.ecm.sigap.data.model.Serie" />
+		<mapping class="com.ecm.sigap.data.model.Status" />
+		<mapping class="com.ecm.sigap.data.model.StatusExpediente" />
+		<mapping class="com.ecm.sigap.data.model.SubFondo" />
+		<mapping class="com.ecm.sigap.data.model.SubSeccion" />
+		<mapping class="com.ecm.sigap.data.model.SubSerie" />
+		<mapping class="com.ecm.sigap.data.model.SubTema" />
+		<mapping class="com.ecm.sigap.data.model.Tema" />
+		<mapping class="com.ecm.sigap.data.model.TipoDocumento" />
+		<mapping class="com.ecm.sigap.data.model.TipoEvento" />
+		<mapping class="com.ecm.sigap.data.model.TipoExpediente" />
+		<mapping class="com.ecm.sigap.data.model.TipoInstruccion" />
+		<mapping class="com.ecm.sigap.data.model.TipoPrioridad" />
+		<mapping class="com.ecm.sigap.data.model.TipoRespuesta" />
+		<mapping class="com.ecm.sigap.data.model.TitularNoFavorito" />
+		<mapping class="com.ecm.sigap.data.model.Usuario" />
+		<mapping class="com.ecm.sigap.data.model.UsuarioNoRegistrado" />
+		<mapping class="com.ecm.sigap.data.model.ValorDocumentalPrimario" />
+		<mapping class="com.ecm.sigap.data.model.ValorDocumentalSecundario" />
+
+		
+	</session-factory>
+	<security context="http://192.168.1.37:19080/cas/v1/tickets" />
+</hibernate-configuration>

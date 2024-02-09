@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<meta charset="UTF-8" />
+
+<title>SIGAP V :: REST Services</title>
+<link rel="stylesheet" href="bootstrap.min.css">
+<link rel="stylesheet" href="bootstrap-theme.min.css">
+<script type="text/javascript" src="jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="bootstrap.min.js"></script>
+<script type="text/javascript" src="bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="bootstrap-datepicker.es.min.js"></script>
+<script type="text/javascript" src="jquery-dateformat.min.js"></script>
+<script type="text/javascript" src="FileSaver.min.js"></script>
+
+<link rel="shortcut icon" href="ecm.ico" type="image/x-icon">
+
+<script type="text/javascript">
+	function execPrueba(saveResult) {
+
+		$('#ajaxLoader').show();
+
+		var pathContext_ = window.location.pathname;
+
+		pathContext_ = pathContext_.replace("/pruebaSintetica.html", "");
+
+		var path = window.location.protocol + "//" + window.location.host
+				+ pathContext_ + "/pruebaSintetica/test?saveResult="
+				+ saveResult;
+
+		var result;
+
+		var jqxhr = $.get(path,
+
+		function(data) {
+			// - - - - - - - - - - - - - -
+			result = data;
+			// - - - - - - - - - - - - - -
+		},
+
+		"html");
+
+		jqxhr.always(function() {
+			$('#resultDiv').empty();
+			$('#resultDiv').append('<pre id="innerDiv">' + result + '</pre>');
+			$('#ajaxLoader').hide();
+		});
+
+	}
+
+	function doit() {
+		execPrueba(false)
+	}
+
+	function doit2() {
+		execPrueba(true)
+	}
+
+	var toCSVData = [];
+
+	var campos_ = [ "fechaRegistro", "tiempo_carga_texto_base_datos_millis",
+			"tiempo_carga_archivo_repositorio_millis", "sessiones_activas",
+			"ip_address", "cargar_archivo_id", "guardar_cadena_generada" ];
+
+	var campos_titulos_ = [ "Fecha registro",
+			"Tiempo de carga a base de datos (millisegundos)",
+			"Tiempo de carga al repositorio (millisegundos)",
+			"Usuarios conectados durante la prueba",
+			"Direccion desde donde se ejecuto la prueba",
+			"Id generado para el archivo cargado",
+			"Cadena insertada en base de datos" ];
+
+	function doQuery() {
+
+		$('#ajaxLoader2').show();
+
+		var pathContext_ = window.location.pathname;
+
+		pathContext_ = pathContext_.replace("/pruebaSintetica.html", "");
+
+		var path = window.location.protocol + "//" + window.location.host
+				+ pathContext_ + "/pruebaSintetica/query";
+
+		var search_ = {
+			"start" : $('#dateStart').val() + "",
+			"end" : $('#dateEnd').val() + ""
+		};
+
+		toCSVData = [];
+
+		$
+				.ajax({
+					url : path,
+					type : "POST",
+					data : JSON.stringify(search_),
+					headers : {
+						'Content-Type' : 'application/json'
+					},
+					dataType : "json",
+					success : function(result) {
+
+						$('#resultDiv2').empty();
+
+						$
+								.each(
+										result,
+										function(index, item) {
+
+											var date = new Date(
+													item.fechaRegistro)
+
+											var x = JSON.parse(item.resultado);
+
+											x['fechaRegistro'] = $.format
+													.date(date,
+															"dd/MM/yyyy HH:mm:ss");
+
+											toCSVData.push(x);
+
+											$('#resultDiv2')
+													.append(
+															'<tr>' + '<td>'
+																	+ $.format
+																			.date(
+																					date,
+																					"dd/MM/yyyy HH:mm:ss")
+																	+ '</td>'
+																	+ '<td>'
+																	+ x.tiempo_carga_texto_base_datos_millis
+																	+ ' millisegundos.</td>'
+																	+ '<td>'
+																	+ x.tiempo_carga_archivo_repositorio_millis
+																	+ ' millisegundos.</td>'
+																	+ '<td>'
+																	+ x.sessiones_activas
+																	+ ' Usuarios.</td>'
+																	+ '<td>'
+																	+ x.ip_address
+																	+ '</td>'
+																	+ '<td><a href="#" onclick=downloadFile(\"'
+																	+ x.cargar_archivo_id
+																	+ '\")>'
+																	+ x.cargar_archivo_id
+																	+ '</a></td>'
+																	+ '<td width="250px" style="word-wrap: break-word">'
+																	+ x.guardar_cadena_generada
+																	+ '</td>'
+																	+ '</tr>');
+										});
+
+						$('#ajaxLoader2').hide();
+					},
+					error : function(jq, status, message) {
+						console.log('A jQuery error has occurred. Status: '
+								+ status + ' - Message: ' + message);
+
+						$('#ajaxLoader2').hide();
+					}
+				});
+
+	}
+
+	function doExportQuery() {
+
+		if (toCSVData.length > 0) {
+
+			// let csvContent = "data:text/csv;charset=utf-8,";
+			let csvContent = "";
+			
+			let columnas_row = campos_titulos_.join(",");
+			csvContent += columnas_row + "\r\n";
+
+			toCSVData.forEach(function(rowArray) {
+
+				var tmp = [];
+				campos_.forEach(function(key) {
+					tmp.push(rowArray[key]);
+				});
+
+				let row = tmp.join(",");
+				csvContent += row + "\r\n";
+			});
+
+			/**
+			var encodedUri = encodeURI(csvContent);
+			var link = document.createElement("a");
+			link.setAttribute("href", encodedUri);
+			link.setAttribute("download", "pruebas_sinteticas.csv");
+			document.body.appendChild(link); // Required for FF
+			link.click();
+			*/
+
+			var encodedString = btoa(csvContent);
+			
+            var ba_file = _base64ToArrayBuffer(encodedString);
+
+            var blob = new Blob(
+                [ba_file], {
+                    type: "text/csv"
+                });
+
+           saveAs(blob, "prueba_sintetica.csv");
+           
+		} else {
+			console.log("No data to export!");
+		}
+
+	}
+
+	function _base64ToArrayBuffer(base64) {
+		var binary_string = window.atob(base64);
+		var len = binary_string.length;
+		var bytes = new Uint8Array(len);
+		for (var i = 0; i < len; i++) {
+			bytes[i] = binary_string.charCodeAt(i);
+		}
+		return bytes.buffer;
+	}
+
+	function downloadFile(id) {
+
+		var pathContext_ = window.location.pathname;
+
+		pathContext_ = pathContext_.replace("/pruebaSintetica.html", "");
+
+		var path = window.location.protocol + "//" + window.location.host
+				+ pathContext_ + "/pruebaSintetica/downloadFile?id=" + id;
+
+		$.get(path, function(data) {
+			// - - - - - - - - - - - - - -
+
+            var ba_file = _base64ToArrayBuffer(data.base64);
+
+            var blob = new Blob(
+                [ba_file], {
+                    type: "image/png"
+                });
+
+           saveAs(blob, "prueba_sintetica.png");
+
+			// - - - - - - - - - - - - - -
+			
+		});
+
+	}
+
+	$(document).ready(function() {
+		$('#ajaxLoader').hide();
+		$('#ajaxLoader2').hide();
+
+		$('.input-daterange').datepicker({
+			format : "dd/mm/yyyy",
+			language: "es"	
+		});
+	});
+</script>
+
+</head>
+
+<body>
+
+	<div class="page-header">
+		<h1>
+			Bienvenido!<br /> <small>Prueba sintetica </small>
+		</h1>
+
+	</div>
+
+	<div class="container">
+
+		<!-- <div class="row">
+
+			<div class="input-group mb-3">
+				<div class="input-group-prepend">
+					<span class="input-group-text" id="basic-addon1"></span>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="idArea">ID del area a recuperar</label> <input
+					id="idArea" class="form-control" aria-label="ID" placeholder="ID"
+					type="number" aria-describedby="basic-addon1" />
+			</div>
+
+		</div> -->
+
+		<div class="row">
+
+			<button type="button" class="btn btn-warning" onclick="doit()">Ejecutar</button>
+			<button type="button" class="btn btn-warning" onclick="doit2()">Ejecutar&nbsp;&amp;&nbsp;Guardar</button>
+
+		</div>
+
+		<div class="row">&nbsp;</div>
+
+		<div class="row">
+
+			<img id="ajaxLoader" alt="loading..." src="ajax-loader.gif" />
+
+			<div id="resultDiv"></div>
+
+		</div>
+
+		<hr />
+
+		<div class="row">
+
+			<div class="input-daterange input-group" id="datepicker">
+				<input id="dateStart" type="text" class="input-sm form-control"
+					name="start" /> <span class="input-group-addon">al</span> <input
+					id="dateEnd" type="text" class="input-sm form-control" name="end" />
+			</div>
+
+		</div>
+
+		<div class="row">&nbsp;</div>
+
+		<div class="row">
+
+			<button type="button" class="btn btn-warning" onclick="doQuery()">Buscar</button>
+			<button type="button" class="btn btn-warning"
+				onclick="doExportQuery()">Exportar Busqueda</button>
+
+		</div>
+
+		<div class="row">&nbsp;</div>
+
+		<div class="row">
+
+			<img id="ajaxLoader2" alt="loading..." src="ajax-loader.gif" />
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">Fecha registro</th>
+						<th scope="col">Tiempo de carga a base de datos</th>
+						<th scope="col">Tiempo de carga al repositorio</th>
+						<th scope="col">Usuarios conectados durante la prueba</th>
+						<th scope="col">Direccion desde donde se ejecuto la prueba</th>
+						<th scope="col">Id generado para el archivo cargado</th>
+						<th scope="col">Cadena insertada en base de datos</th>
+					</tr>
+				</thead>
+
+				<tbody id="resultDiv2">
+				</tbody>
+
+			</table>
+
+		</div>
+
+
+	</div>
+</body>
+
+</html>

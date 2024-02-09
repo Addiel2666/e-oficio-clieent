@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<style type="text/css">
+.font-bold {
+	font-weight: bold;
+}
+.font-general {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#333;
+}
+</style>
+</head>
+
+<body class="font-general">
+ 
+ <p>Estimado(a) <span class="font-bold">${nombreCiudadano}</span></p>
+ <p>Usted a recibido un asunto para su atenci&oacute;n. Para poder ingresar a la informaci&oacute;n debe de dar clic   
+ 	<a href="${parametrosURL}"> aqui</a>.
+ </p>
+  <p>La clave de acceso es:  <span class="font-bold"><pre>${claveAcceso}</pre></span></p>
+ <p>Atentamente</p>
+ <p>Sistema de Control de Gesti&oacute;n.</p>
+</body>
+</html>
